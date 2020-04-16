@@ -1,0 +1,643 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "from matplotlib import pyplot as plt\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "flights_initial = pd.read_excel(\"flights.xlsx\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "flights = flights_initial.copy()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>day_of_week</th>\n",
+       "      <th>fl_date</th>\n",
+       "      <th>airline</th>\n",
+       "      <th>flight_number</th>\n",
+       "      <th>tail_number</th>\n",
+       "      <th>origin_airport</th>\n",
+       "      <th>origin_state_code</th>\n",
+       "      <th>destination_airport</th>\n",
+       "      <th>destination_state_code</th>\n",
+       "      <th>departure_time</th>\n",
+       "      <th>...</th>\n",
+       "      <th>taxi_in</th>\n",
+       "      <th>arrival_time</th>\n",
+       "      <th>arrival_delay</th>\n",
+       "      <th>diverted</th>\n",
+       "      <th>cancelled</th>\n",
+       "      <th>nas_delay</th>\n",
+       "      <th>security_delay</th>\n",
+       "      <th>airline_delay</th>\n",
+       "      <th>late_aircraft_delay</th>\n",
+       "      <th>weather_delay</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>6</td>\n",
+       "      <td>2015-8-29</td>\n",
+       "      <td>BA</td>\n",
+       "      <td>542</td>\n",
+       "      <td>N951AT</td>\n",
+       "      <td>ABE</td>\n",
+       "      <td>PA</td>\n",
+       "      <td>ATL</td>\n",
+       "      <td>GA</td>\n",
+       "      <td>644.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>844.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>3</td>\n",
+       "      <td>2015-8-19</td>\n",
+       "      <td>BA</td>\n",
+       "      <td>542</td>\n",
+       "      <td>N981AT</td>\n",
+       "      <td>ABE</td>\n",
+       "      <td>PA</td>\n",
+       "      <td>ATL</td>\n",
+       "      <td>GA</td>\n",
+       "      <td>623.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>814.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>4</td>\n",
+       "      <td>2015-8-13</td>\n",
+       "      <td>BA</td>\n",
+       "      <td>1801</td>\n",
+       "      <td>N925AT</td>\n",
+       "      <td>ABE</td>\n",
+       "      <td>PA</td>\n",
+       "      <td>ATL</td>\n",
+       "      <td>GA</td>\n",
+       "      <td>615.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>806.0</td>\n",
+       "      <td>-9.0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>6</td>\n",
+       "      <td>2015-8-22</td>\n",
+       "      <td>BA</td>\n",
+       "      <td>542</td>\n",
+       "      <td>N998AT</td>\n",
+       "      <td>ABE</td>\n",
+       "      <td>PA</td>\n",
+       "      <td>ATL</td>\n",
+       "      <td>GA</td>\n",
+       "      <td>641.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>8.0</td>\n",
+       "      <td>843.0</td>\n",
+       "      <td>-1.0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>4</td>\n",
+       "      <td>2015-8-27</td>\n",
+       "      <td>BA</td>\n",
+       "      <td>542</td>\n",
+       "      <td>N965AT</td>\n",
+       "      <td>ABE</td>\n",
+       "      <td>PA</td>\n",
+       "      <td>ATL</td>\n",
+       "      <td>GA</td>\n",
+       "      <td>614.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>10.0</td>\n",
+       "      <td>823.0</td>\n",
+       "      <td>10.0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 24 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   day_of_week    fl_date airline  flight_number tail_number origin_airport  \\\n",
+       "0            6  2015-8-29      BA            542      N951AT            ABE   \n",
+       "1            3  2015-8-19      BA            542      N981AT            ABE   \n",
+       "2            4  2015-8-13      BA           1801      N925AT            ABE   \n",
+       "3            6  2015-8-22      BA            542      N998AT            ABE   \n",
+       "4            4  2015-8-27      BA            542      N965AT            ABE   \n",
+       "\n",
+       "  origin_state_code destination_airport destination_state_code  \\\n",
+       "0                PA                 ATL                     GA   \n",
+       "1                PA                 ATL                     GA   \n",
+       "2                PA                 ATL                     GA   \n",
+       "3                PA                 ATL                     GA   \n",
+       "4                PA                 ATL                     GA   \n",
+       "\n",
+       "   departure_time  ...  taxi_in  arrival_time  arrival_delay  diverted  \\\n",
+       "0           644.0  ...      6.0         844.0            0.0         0   \n",
+       "1           623.0  ...      6.0         814.0            1.0         0   \n",
+       "2           615.0  ...      7.0         806.0           -9.0         0   \n",
+       "3           641.0  ...      8.0         843.0           -1.0         0   \n",
+       "4           614.0  ...     10.0         823.0           10.0         0   \n",
+       "\n",
+       "   cancelled  nas_delay  security_delay  airline_delay  late_aircraft_delay  \\\n",
+       "0          0        NaN             NaN            NaN                  NaN   \n",
+       "1          0        NaN             NaN            NaN                  NaN   \n",
+       "2          0        NaN             NaN            NaN                  NaN   \n",
+       "3          0        NaN             NaN            NaN                  NaN   \n",
+       "4          0        NaN             NaN            NaN                  NaN   \n",
+       "\n",
+       "   weather_delay  \n",
+       "0            NaN  \n",
+       "1            NaN  \n",
+       "2            NaN  \n",
+       "3            NaN  \n",
+       "4            NaN  \n",
+       "\n",
+       "[5 rows x 24 columns]"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "flights.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['day_of_week', 'fl_date', 'airline', 'flight_number', 'tail_number',\n",
+       "       'origin_airport', 'origin_state_code', 'destination_airport',\n",
+       "       'destination_state_code', 'departure_time', 'departure_delay',\n",
+       "       'taxi_out', 'air_time', 'distance', 'taxi_in', 'arrival_time',\n",
+       "       'arrival_delay', 'diverted', 'cancelled', 'nas_delay', 'security_delay',\n",
+       "       'airline_delay', 'late_aircraft_delay', 'weather_delay'],\n",
+       "      dtype='object')"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "flights.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Create cols for flight delay\n",
+    "flights['arrival_delay_type'] = np.nan\n",
+    "\n",
+    "#Give different statuses according to length of delay or cancelled or diverted\n",
+    "flights.loc[flights['arrival_delay'] <= 0.0, 'arrival_delay_type'] = 'ON-TIME'\n",
+    "flights.loc[flights['arrival_delay'] > 0.0, 'arrival_delay_type'] = 'MINOR'\n",
+    "flights.loc[flights['arrival_delay'] >= 15, 'arrival_delay_type'] = 'SIGNIFICANT'\n",
+    "flights.loc[flights['arrival_delay'] >= 45, 'arrival_delay_type'] = 'SEVERE'\n",
+    "flights.loc[flights['cancelled'] == 1, 'arrival_delay_type'] = 'CANCELLED'\n",
+    "flights.loc[flights['diverted'] == 1, 'arrival_delay_type'] = 'DIVERTED'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array(['ON-TIME', 'MINOR', 'SIGNIFICANT', 'SEVERE', 'CANCELLED',\n",
+       "       'DIVERTED'], dtype=object)"
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "flights['arrival_delay_type'].unique()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>day_of_week</th>\n",
+       "      <th>fl_date</th>\n",
+       "      <th>airline</th>\n",
+       "      <th>flight_number</th>\n",
+       "      <th>tail_number</th>\n",
+       "      <th>origin_airport</th>\n",
+       "      <th>origin_state_code</th>\n",
+       "      <th>destination_airport</th>\n",
+       "      <th>destination_state_code</th>\n",
+       "      <th>departure_time</th>\n",
+       "      <th>...</th>\n",
+       "      <th>arrival_time</th>\n",
+       "      <th>arrival_delay</th>\n",
+       "      <th>diverted</th>\n",
+       "      <th>cancelled</th>\n",
+       "      <th>nas_delay</th>\n",
+       "      <th>security_delay</th>\n",
+       "      <th>airline_delay</th>\n",
+       "      <th>late_aircraft_delay</th>\n",
+       "      <th>weather_delay</th>\n",
+       "      <th>arrival_delay_type</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>0 rows × 25 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "Empty DataFrame\n",
+       "Columns: [day_of_week, fl_date, airline, flight_number, tail_number, origin_airport, origin_state_code, destination_airport, destination_state_code, departure_time, departure_delay, taxi_out, air_time, distance, taxi_in, arrival_time, arrival_delay, diverted, cancelled, nas_delay, security_delay, airline_delay, late_aircraft_delay, weather_delay, arrival_delay_type]\n",
+       "Index: []\n",
+       "\n",
+       "[0 rows x 25 columns]"
+      ]
+     },
+     "execution_count": 40,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#If empty, means our filtering is good\n",
+    "flights[flights['arrival_delay_type'].isnull()]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Part 1 - Overall flight profile\n",
+    "Comparing the delayed vs on-time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th>count</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>airline</th>\n",
+       "      <th>arrival_delay_type</th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th rowspan=\"6\" valign=\"top\">AA</th>\n",
+       "      <th>CANCELLED</th>\n",
+       "      <td>790</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>DIVERTED</th>\n",
+       "      <td>250</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>MINOR</th>\n",
+       "      <td>12454</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>ON-TIME</th>\n",
+       "      <td>51806</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>SEVERE</th>\n",
+       "      <td>6157</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>SIGNIFICANT</th>\n",
+       "      <td>8291</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th rowspan=\"6\" valign=\"top\">BA</th>\n",
+       "      <th>CANCELLED</th>\n",
+       "      <td>69</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>DIVERTED</th>\n",
+       "      <td>203</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>MINOR</th>\n",
+       "      <td>11986</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>ON-TIME</th>\n",
+       "      <td>57197</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>SEVERE</th>\n",
+       "      <td>4798</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>SIGNIFICANT</th>\n",
+       "      <td>6694</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                            count\n",
+       "airline arrival_delay_type       \n",
+       "AA      CANCELLED             790\n",
+       "        DIVERTED              250\n",
+       "        MINOR               12454\n",
+       "        ON-TIME             51806\n",
+       "        SEVERE               6157\n",
+       "        SIGNIFICANT          8291\n",
+       "BA      CANCELLED              69\n",
+       "        DIVERTED              203\n",
+       "        MINOR               11986\n",
+       "        ON-TIME             57197\n",
+       "        SEVERE               4798\n",
+       "        SIGNIFICANT          6694"
+      ]
+     },
+     "execution_count": 66,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "delay_type_count_table = flights.groupby(['airline', 'arrival_delay_type'])['flight_number'].aggregate(['count'])\n",
+    "delay_type_count_table"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "26902"
+      ]
+     },
+     "execution_count": 67,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "AA_delayed = delay_type_count_table.loc(axis=0)['AA', ['MINOR', 'SEVERE', 'SIGNIFICANT']]\n",
+    "BA_delayed = delay_type_count_table.loc(axis=0)['BA', ['MINOR', 'SEVERE', 'SIGNIFICANT']]\n",
+    "AA_ontime = delay_type_count_table.loc(axis=0)['AA', 'ON-TIME']\n",
+    "BA_ontime = delay_type_count_table.loc(axis=0)['BA', 'ON-TIME']\n",
+    "AA_delayed['count'].sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>ON-TIME</th>\n",
+       "      <th>DELAYED</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>AA</th>\n",
+       "      <td>0.658205</td>\n",
+       "      <td>0.341795</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>BA</th>\n",
+       "      <td>0.708980</td>\n",
+       "      <td>0.291020</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     ON-TIME   DELAYED\n",
+       "AA  0.658205  0.341795\n",
+       "BA  0.708980  0.291020"
+      ]
+     },
+     "execution_count": 68,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "total_AA = AA_ontime['count'].sum() + AA_delayed['count'].sum()\n",
+    "total_BA = BA_ontime['count'].sum() + BA_delayed['count'].sum()\n",
+    "pd.DataFrame({\n",
+    "    'ON-TIME': np.array([AA_ontime['count'].sum() / total_AA, BA_ontime['count'].sum() / total_BA]),\n",
+    "    'DELAYED': np.array([AA_delayed['count'].sum() / total_AA, BA_delayed['count'].sum() / total_BA])\n",
+    "}, index=['AA', 'BA'])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Part 2 - Average delay over days"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
