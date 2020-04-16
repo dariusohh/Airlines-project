@@ -1,6 +1,6 @@
-# Airlines-project
+# Airlines Data Visualisation project
 
-Data Visualisation Project
+Data Visualisation Project using Airline Data
 
 Through manipulation of the data using Pandas and data visualisation tools such as Excel and Tableau, we came up with a presentation to show how we dived deep into the data for two Airlines and compare both of them in terms of efficiency.
 
